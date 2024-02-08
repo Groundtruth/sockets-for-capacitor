@@ -96,12 +96,9 @@ public class SocketPlugin extends CordovaPlugin {
 
     private void write(CordovaArgs args, CallbackContext callbackContext) throws JSONException {
         String socketKey = args.getString(0);
-        JSONArray data = args.getJSONArray(1);
+        String data = args.getString(1);
 
-        byte[] dataBuffer = new byte[data.length()];
-        for (int i = 0; i < dataBuffer.length; i++) {
-            dataBuffer[i] = (byte) data.getInt(i);
-        }
+        byte[] dataBuffer = createPacket(data);
 
         SocketAdapter socket = this.getSocketAdapter(socketKey);
 
@@ -113,6 +110,27 @@ public class SocketPlugin extends CordovaPlugin {
         } catch (IOException e) {
             callbackContext.error(e.toString());
         }
+    }
+
+    private byte[] createPacket(String data) throws JSONException {
+        // Message envelope construction for GP FLEX Integration
+        int dataSize = data.length();
+        int packetLength = dataSize + 2;
+        byte[] header = new byte[2];
+
+        // Set the most significant byte
+        header[0] = (byte) ((dataSize >> 8) & 0xFF);
+
+        // Set the least significant byte
+        header[1] = (byte) (dataSize & 0xFF);
+
+        byte[] packet = data.getBytes();
+
+        byte[] all_bytes = new byte[header.length + packet.length];
+        System.arraycopy(header, 0, all_bytes, 0, header.length);
+        System.arraycopy(packet, 0, all_bytes, header.length, packet.length);
+
+        return all_bytes;
     }
 
     private void shutdownWrite(CordovaArgs args, CallbackContext callbackContext) throws JSONException {
