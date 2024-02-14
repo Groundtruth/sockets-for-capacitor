@@ -40,12 +40,12 @@ function Socket() {
     this.socketKey = guid();
 }
 
-Socket.prototype.open = function (host, port, success, error) {
+Socket.prototype.open = function (host, port, timeout, success, error) {
 
     success = success || function () {
-        };
+    };
     error = error || function () {
-        };
+    };
 
     if (!this._ensureState(Socket.State.CLOSED, error)) {
         return;
@@ -93,19 +93,15 @@ Socket.prototype.open = function (host, port, success, error) {
         },
         CORDOVA_SERVICE_NAME,
         "open",
-        [
-            this.socketKey,
-            host,
-            port
-        ]);
+        [this.socketKey, host, port, timeout]);
 };
 
 Socket.prototype.write = function (data, success, error) {
 
     success = success || function () {
-        };
+    };
     error = error || function () {
-        };
+    };
 
     if (!this._ensureState(Socket.State.OPENED, error)) {
         return;
@@ -120,18 +116,15 @@ Socket.prototype.write = function (data, success, error) {
         error,
         CORDOVA_SERVICE_NAME,
         "write",
-        [
-            this.socketKey,
-            dataToWrite
-        ]);
+        [this.socketKey, dataToWrite]);
 };
 
 Socket.prototype.shutdownWrite = function (success, error) {
 
     success = success || function () {
-        };
+    };
     error = error || function () {
-        };
+    };
 
     if (!this._ensureState(Socket.State.OPENED, error)) {
         return;
@@ -145,12 +138,31 @@ Socket.prototype.shutdownWrite = function (success, error) {
         [this.socketKey]);
 };
 
+Socket.prototype.setOptions = function (success, error, options) {
+
+    success = success || function () {
+    };
+    error = error || function () {
+    };
+
+    if (!this._ensureState(Socket.State.CLOSED, error)) {
+        return;
+    }
+
+    exec(
+        success,
+        error,
+        CORDOVA_SERVICE_NAME,
+        "setOptions",
+        [this.socketKey, options]);
+};
+
 Socket.prototype.close = function (success, error) {
 
     success = success || function () {
-        };
+    };
     error = error || function () {
-        };
+    };
 
     if (!this._ensureState(Socket.State.OPENED, error)) {
         return;
@@ -167,11 +179,11 @@ Socket.prototype.close = function (success, error) {
 };
 
 Object.defineProperty(Socket.prototype, "state", {
-    get          : function () {
+    get: function () {
         return this._state;
     },
-    enumerable   : true,
-    configurable : true
+    enumerable: true,
+    configurable: true
 });
 
 Socket.prototype._ensureState = function (requiredState, errorCallback) {
@@ -181,8 +193,7 @@ Socket.prototype._ensureState = function (requiredState, errorCallback) {
             errorCallback("Invalid operation for this socket state: " + Socket.State[state]);
         });
         return false;
-    }
-    else {
+    } else {
         return true;
     }
 };
