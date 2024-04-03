@@ -1,20 +1,18 @@
-sockets-for-cordova
+sockets-for-capacitor
 ===================
-This Cordova plugin provides JavaScript API, that allows you to communicate with the server through TCP protocol.
+This Capacitor plugin with a TypeScript API, that allows you to communicate with the server through TCP protocol.
 
 Currently, we support these platforms: iOS, Android, WP8.
 
-You can also get information about this plugin from our blog post http://www.blocshop.cz/2015/01/12/tcp-networking-in-cordova/
+You can also get information about the Cordova plugin this was forked from (a few forks back now...) this blog post http://www.blocshop.cz/2015/01/12/tcp-networking-in-cordova/
 
 ## Installation
 
-Install this plugin simply by:
+Install this plugin (ionic framework, react, capacitor, with yarn as package manager) simply by:
 
-`cordova plugin add cordova-plugin-socket-tcp`
+`yarn add https://github.com/Groundtruth/sockets-for-capacitor`
 
-for the Ionic Framework
-
-`ionic cordova plugin add cordova-plugin-socket-tcp`
+`yarn cap sync`
 
 ## Sample usage
 Here is a simple example of how to connect to a remote server, consume data from it, and close the connection.
@@ -36,11 +34,12 @@ socket.onClose = function(hasError) {
   // invoked after connection close
 };
 ```
-Connect to server someremoteserver.com, with port 1234:
+Connect to server someremoteserver.com, with port 1234, with 10 second timeout:
 ```
 socket.open(
   "someremoteserver.com",
   1234,
+  10000,
   function() {
     // invoked after the successful opening of the socket
   },
@@ -106,6 +105,7 @@ Establishes a connection with the remote host.
 | ----------- |-----------------------------|--------------|
 | `host`      | `string`                    | Remote host/ip address |
 | `port`      | `number`                    | Tcp port number |
+| `timeout`   | `number`                    | Timeout milliseconds
 | `onSuccess` | `() => void`                | Success callback - called after successful connection to the remote host. (optional)|
 | `onError`   | `(message: string) => void` | Error callback - called when some error occurs during connecting to the remote host. (optional)|
 
@@ -167,5 +167,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  - 1.6.0 - close old existing sockets on reopen by destination ports. Removed iOS trash sources [iOS, Android]
  - 1.7.0 - added codes to error handlers [iOS, Android]
  - 1.7.1 - error handler bugfixes [Android]
+ - 1.7.2 - minimal changes to work with capacitor / react
   
 Appelian, 2015  

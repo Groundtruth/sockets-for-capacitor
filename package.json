@@ -1,7 +1,7 @@
 {
-  "name": "cordova-plugin-socket-tcp",
+  "name": "capacitor-plugin-socket-tcp",
   "version": "1.7.2",
-  "description": "This Cordova plugin provides JavaScript API, that allows you to communicate with server through TCP protocol. Currently we support these platforms: iOS, Android, WP8.",
+  "description": "This Capacitor plugin provides JavaScript API, that allows you to communicate with server through TCP protocol. Currently we support these platforms: iOS, Android, WP8.",
   "cordova": {
     "platforms": [
       "ios",
@@ -11,10 +11,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kitolog/sockets-for-cordova"
+    "url": "https://github.com/Groundtruth/sockets-for-capacitor"
   },
   "keywords": [
     "cordova",
+    "capacitor",
     "sockets",
     "tcp",
     "network",
