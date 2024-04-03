@@ -14,6 +14,12 @@ Install this plugin (ionic framework, react, capacitor, with yarn as package man
 
 `yarn cap sync`
 
+## Uninstall
+
+`yarn remove capacitor-plugin-socket-tcp`
+
+`yarn cap sync` 
+
 ## Sample usage
 Here is a simple example of how to connect to a remote server, consume data from it, and close the connection.
 
