@@ -16,7 +16,7 @@
  */
 
 
-var exec = require('cordova/exec');
+//var exec = require('cordova/exec');
 
 var SOCKET_EVENT = "SOCKET_EVENT";
 var CORDOVA_SERVICE_NAME = "SocketsForCordova";
@@ -81,7 +81,7 @@ Socket.prototype.open = function (host, port, timeout, success, error) {
 
     _that._state = Socket.State.OPENING;
 
-    exec(
+    cordova.exec(
         function () {
             _that._state = Socket.State.OPENED;
             window.document.addEventListener(SOCKET_EVENT, socketEventHandler);
@@ -111,7 +111,7 @@ Socket.prototype.write = function (data, success, error) {
         ? Socket._copyToArray(data)
         : data;
 
-    exec(
+    cordova.exec(
         success,
         error,
         CORDOVA_SERVICE_NAME,
@@ -130,7 +130,7 @@ Socket.prototype.shutdownWrite = function (success, error) {
         return;
     }
 
-    exec(
+    cordova.exec(
         success,
         error,
         CORDOVA_SERVICE_NAME,
@@ -149,7 +149,7 @@ Socket.prototype.setOptions = function (success, error, options) {
         return;
     }
 
-    exec(
+    cordova.exec(
         success,
         error,
         CORDOVA_SERVICE_NAME,
@@ -170,7 +170,7 @@ Socket.prototype.close = function (success, error) {
 
     this._state = Socket.State.CLOSING;
 
-    exec(
+    cordova.exec(
         success,
         error,
         CORDOVA_SERVICE_NAME,
@@ -230,7 +230,7 @@ var guid = (function () {
 // Register event dispatcher for Windows Phone
 if (navigator.userAgent.match(/iemobile/i)) {
     window.document.addEventListener("deviceready", function () {
-        exec(
+        cordova.exec(
             Socket.dispatchEvent,
             function (errorMessage) {
                 console.error("SocketsForCordova: Cannot register WP event dispatcher, Error: " + errorMessage);

@@ -23,5 +23,11 @@
     "cordova-android"
   ],
   "author": "blocshop",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "types": "./dist/socket.d.ts",
+  "main": "./socket.js",
+  "devDependencies": {
+    "typescript": "^4.4.3"
+  },
+  "dependencies": {}
 }
