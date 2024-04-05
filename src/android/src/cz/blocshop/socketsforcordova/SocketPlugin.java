@@ -139,7 +139,7 @@ public class SocketPlugin extends CordovaPlugin {
 
     // overload in order to default to NOT including the packet header (this is NOT good for backward compatibility, but need to test with this as default TODO default to header on!)
 	private byte[] createPacket(String data) throws JSONException {
-        createPacket(data, false);
+        return createPacket(data, false);
     }
 
 	private void shutdownWrite(CordovaArgs args, CallbackContext callbackContext) throws JSONException {
