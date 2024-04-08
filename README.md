@@ -10,7 +10,7 @@ You can also get information about the Cordova plugin this was forked from (a fe
 
 Install this plugin (ionic framework, react, capacitor, with yarn as package manager) simply by:
 
-`yarn add https://github.com/Groundtruth/sockets-for-capacitor`
+`yarn add capacitor-plugin-socket-tcp@https://github.com/Groundtruth/sockets-for-capacitor`
 
 `yarn cap sync`
 
