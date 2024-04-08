@@ -116,6 +116,7 @@ public class SocketPlugin extends CordovaPlugin {
 		int dataSize = data.length();
 		byte[] packet = data.getBytes();
 
+        // this packet header doesn't appear to be needed to be honest it looks more like a payload header, as the main tcp packet header appears to have nothing to do with this.
         if (includePacketHeader == true) {
             byte[] header = new byte[2];
 
@@ -137,7 +138,7 @@ public class SocketPlugin extends CordovaPlugin {
         }
 	}
 
-    // overload in order to default to NOT including the packet header (this is NOT good for backward compatibility, but need to test with this as default TODO default to header on!)
+    // overload in order to default to NOT including the packet/payload header (this might NOT be good for backward compatibility, be warned!)
 	private byte[] createPacket(String data) throws JSONException {
         return createPacket(data, false);
     }
