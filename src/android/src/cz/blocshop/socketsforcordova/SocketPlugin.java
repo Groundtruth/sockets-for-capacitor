@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.naming.Context;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaArgs;
 import org.apache.cordova.CordovaPlugin;
@@ -32,6 +34,7 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
+import android.net.ConnectivityManager;
 
 public class SocketPlugin extends CordovaPlugin {
 
@@ -64,7 +67,9 @@ public class SocketPlugin extends CordovaPlugin {
 		int port = args.getInt(2);
 		int timeout = args.getInt(3);
 
-		SocketAdapter socketAdapter = new SocketAdapterImpl();
+		ConnectivityManager connectivity = (ConnectivityManager) this.cordova.getActivity().getApplicationContext().getSystemService(android.content.Context.CONNECTIVITY_SERVICE);
+
+		SocketAdapter socketAdapter = new SocketAdapterImpl(connectivity);
 		socketAdapter.setCloseEventHandler(new CloseEventHandler(socketKey));
 		socketAdapter.setDataConsumer(new DataConsumer(socketKey));
 		socketAdapter.setErrorEventHandler(new ErrorEventHandler(socketKey));

@@ -26,7 +26,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 
 public class SocketAdapterImpl implements SocketAdapter {
     
@@ -41,8 +43,27 @@ public class SocketAdapterImpl implements SocketAdapter {
     
     private ExecutorService executor;
 
-    public SocketAdapterImpl() {
-        this.socket = new Socket();
+    // https://stackoverflow.com/questions/56066632/android-9-socket-connect-timeout-when-mobile-data-enabled
+
+    public SocketAdapterImpl(ConnectivityManager connectivity) {
+
+        if (connectivity != null)
+        {
+            for (Network network : connectivity.getAllNetworks())
+            {
+                NetworkInfo networkInfo = connectivity.getNetworkInfo(network);
+
+                if (networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI)
+                {
+                    if (networkInfo.isConnected())
+                    {
+                        this.socket = network.getSocketFactory().createSocket();
+                    }
+                }
+            }
+        }
+
+        //this.socket = new Socket();
         this.executor = Executors.newSingleThreadExecutor();
     }
 
