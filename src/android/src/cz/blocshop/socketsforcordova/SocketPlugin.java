@@ -116,26 +116,37 @@ public class SocketPlugin extends CordovaPlugin {
 		}
 	}
 
-	private byte[] createPacket(String data) throws JSONException {
+	private byte[] createPacket(String data, Boolean includePacketHeader) throws JSONException {
 		// Message envelope construction for GP FLEX Integration
 		int dataSize = data.length();
-		int packetLength = dataSize + 2;
-		byte[] header = new byte[2];
-
-		// Set the most significant byte
-		header[0] = (byte) ((dataSize >> 8) & 0xFF);
-
-		// Set the least significant byte
-		header[1] = (byte) (dataSize & 0xFF);
-
 		byte[] packet = data.getBytes();
 
-		byte[] all_bytes = new byte[header.length + packet.length];
-		System.arraycopy(header, 0, all_bytes, 0, header.length);
-		System.arraycopy(packet, 0, all_bytes, header.length, packet.length);
+        // this packet header doesn't appear to be needed to be honest it looks more like a payload header, as the main tcp packet header appears to have nothing to do with this.
+        if (includePacketHeader == true) {
+            byte[] header = new byte[2];
 
-		return all_bytes;
+            // Set the most significant byte
+            header[0] = (byte) ((dataSize >> 8) & 0xFF);
+
+            // Set the least significant byte
+            header[1] = (byte) (dataSize & 0xFF);
+
+            byte[] all_bytes = new byte[header.length + packet.length];
+            System.arraycopy(header, 0, all_bytes, 0, header.length);
+            System.arraycopy(packet, 0, all_bytes, header.length, packet.length);
+		    return all_bytes;
+        }
+        else { // no packet header required
+            byte[] all_bytes = new byte[packet.length];
+            System.arraycopy(packet, 0, all_bytes, 0, packet.length);
+		    return all_bytes;
+        }
 	}
+
+    // overload in order to default to NOT including the packet/payload header (this might NOT be good for backward compatibility, be warned!)
+	private byte[] createPacket(String data) throws JSONException {
+        return createPacket(data, false);
+    }
 
 	private void shutdownWrite(CordovaArgs args, CallbackContext callbackContext) throws JSONException {
 		String socketKey = args.getString(0);
